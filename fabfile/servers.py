@@ -12,6 +12,39 @@ from jinja2 import Template
 
 import app_config
 
+
+# sa added
+"""
+Prepare
+"""
+
+@task
+def prepare():
+    """
+    Prepares VM for setup
+    """
+    require('settings', provided_by=['production', 'staging'])
+    require('branch', provided_by=['stable', 'master', 'branch'])
+
+    if not app_config.DEPLOY_TO_SERVERS:
+        print 'You must set DEPLOY_TO_SERVERS = True in your app_config.py before setting up the servers.'
+
+        return
+    run('sudo chown ubuntu /var -R; sudo chown ubuntu /tmp -R')
+    run('sudo apt-get install python-software-properties python g++ make')
+    run('sudo apt-get install python-dev')
+    run('sudo apt-get install python-setuptools')
+    run('sudo easy_install pip')
+    run('sudo pip install virtualenv virtualenvwrapper')
+    run('sudo pip install uwsgi')
+    run('sudo apt-get install git')
+    run('sudo add-apt-repository ppa:chris-lea/node.js')
+    run('sudo apt-get update')
+    run('sudo apt-get install nodejs')
+    run('sudo apt-get install nginx')
+    #run('sudo service nginx start')
+
+
 """
 Setup
 """
@@ -36,6 +69,7 @@ def setup():
     clone_repo()
     checkout_latest()
     install_requirements()
+
 
 def create_directories():
     """
@@ -179,7 +213,9 @@ def deploy_confs():
             rendered_path = _get_rendered_conf_path(service, extension)
             installed_path = _get_installed_conf_path(service, remote_path, extension)
 
-            a = local('md5 -q %s' % rendered_path, capture=True)
+            # another OSX difference, I guess
+            #a = local('md5 -q %s' % rendered_path, capture=True)
+            a = local('md5sum %s' % rendered_path, capture=True).split()[0]
             b = run('md5sum %s' % installed_path).split()[0]
 
             if a != b:

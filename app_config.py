@@ -22,7 +22,7 @@ PROJECT_FILENAME = '$NEW_PROJECT_FILENAME'
 
 # The name of the repository containing the source
 REPOSITORY_NAME = '$NEW_REPOSITORY_NAME'
-GITHUB_USERNAME = 'nprapps'
+GITHUB_USERNAME = 'sloanahrens'
 REPOSITORY_URL = 'git@github.com:%s/%s.git' % (GITHUB_USERNAME, REPOSITORY_NAME)
 REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME'
 
@@ -35,25 +35,25 @@ DEPLOYMENT
 """
 PRODUCTION_S3_BUCKETS = [
     {
-        'bucket_name': 'apps.npr.org',
-        'region': 'us-east-1'
+        'bucket_name': 'apps.sloanahrens.com',
+        'region': 'us-west-2'
     },
     {
-        'bucket_name': 'apps2.npr.org',
-        'region': 'us-east-1'
+        'bucket_name': 'apps.sloanahrens.com',
+        'region': 'us-west-2'
     }
 ]
 
 STAGING_S3_BUCKETS = [
     {
-        'bucket_name': 'stage-apps.npr.org',
-        'region': 'us-east-1'
+        'bucket_name': 'apps.sloanahrens.com',
+        'region': 'us-west-2'
     }
 ]
 
 ASSETS_S3_BUCKET = {
-    'bucket_name': 'assets.apps.npr.org',
-    'region': 'us-east-1'
+    'bucket_name': 'apps.sloanahrens.com',
+    'region': 'us-west-2'
 }
 
 PRODUCTION_SERVERS = ['cron.nprapps.org']
@@ -86,7 +86,7 @@ APP_LOG_PATH = '/var/log/%s.app.log' % PROJECT_FILENAME
 SERVER_SERVICES = [
     ('app', SERVER_REPOSITORY_PATH, 'ini'),
     ('uwsgi', '/etc/init', 'conf'),
-    ('nginx', '/etc/nginx/locations-enabled', 'conf'),
+    ('nginx', '/etc/nginx/sites-available', 'conf'),
 ]
 
 # These variables will be set at runtime. See configure_targets() below
@@ -99,7 +99,8 @@ DEBUG = True
 """
 COPY EDITING
 """
-COPY_GOOGLE_DOC_URL = 'https://docs.google.com/spreadsheet/ccc?key=0AlXMOHKxzQVRdHZuX1UycXplRlBfLVB0UVNldHJYZmc&usp=drive_web#gid=1'
+COPY_GOOGLE_DOC_URL = 'https://docs.google.com/spreadsheet/ccc?key=1rqxnvuGWa5YrvSZDfsmewJaPKRR1Kl_e05NbuvlaGYg&usp=drive_web#gid=1'
+
 COPY_PATH = 'data/copy.xlsx'
 
 """
@@ -122,7 +123,7 @@ NPR_DFP = {
 SERVICES
 """
 GOOGLE_ANALYTICS = {
-    'ACCOUNT_ID': 'UA-5828686-4',
+    'ACCOUNT_ID': 'none',
     'DOMAIN': PRODUCTION_S3_BUCKETS[0],
     'TOPICS': '' # e.g. '[1014,3,1003,1002,1001]'
 }
