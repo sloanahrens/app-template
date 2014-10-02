@@ -31,18 +31,17 @@ def prepare():
 
         return
     run('sudo chown ubuntu /var -R; sudo chown ubuntu /tmp -R')
-    run('sudo apt-get install python-software-properties python g++ make')
-    run('sudo apt-get install python-dev')
-    run('sudo apt-get install python-setuptools')
+    run('sudo apt-get -y install python-software-properties python g++ make')
+    run('sudo apt-get -y install python-dev')
+    run('sudo apt-get -y install python-setuptools')
     run('sudo easy_install pip')
     run('sudo pip install virtualenv virtualenvwrapper')
     run('sudo pip install uwsgi')
-    run('sudo apt-get install git')
-    run('sudo add-apt-repository ppa:chris-lea/node.js')
-    run('sudo apt-get update')
-    run('sudo apt-get install nodejs')
-    run('sudo apt-get install nginx')
-    #run('sudo service nginx start')
+    run('sudo apt-get -y install git')
+    run('sudo add-apt-repository -y ppa:chris-lea/node.js')
+    run('sudo apt-get -y update')
+    run('sudo apt-get -y install nodejs')
+    run('sudo apt-get -y install nginx')
 
 
 """
