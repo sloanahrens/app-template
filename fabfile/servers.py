@@ -14,6 +14,28 @@ import app_config
 
 
 # sa added
+##########
+
+"""
+Fix Nginx
+"""
+
+@task
+def fix_nginx():
+    """
+    Fixes issue with nginx conf; run after deploy_confs
+    """
+    require('settings', provided_by=['production', 'staging'])
+    require('branch', provided_by=['stable', 'master', 'branch'])
+
+    if not app_config.DEPLOY_TO_SERVERS:
+        print 'You must set DEPLOY_TO_SERVERS = True in your app_config.py before setting up the servers.'
+
+    run('sudo rm -rf /etc/nginx/sites-available/default')
+    run('sudo ln -s /etc/nginx/sites-available/circles.nginx.conf /etc/nginx/sites-enabled/circles.nginx.conf')
+    run('sudo service nginx restart')
+
+
 """
 Prepare
 """
@@ -78,6 +100,7 @@ def install_es():
     run('sudo service elasticsearch start')
     run('sudo pip install elasticsearch')
 
+##########
 
 """
 Setup
