@@ -42,6 +42,41 @@ def prepare():
     run('sudo apt-get -y update')
     run('sudo apt-get -y install nodejs')
     run('sudo apt-get -y install nginx')
+    run('sudo apt-get -y install curl')
+
+
+"""
+Install ES
+"""
+
+@task
+def install_es():
+    """
+    Install Java 8 and Elasticsearch 1.3.2
+    """
+    require('settings', provided_by=['production', 'staging'])
+    require('branch', provided_by=['stable', 'master', 'branch'])
+
+    if not app_config.DEPLOY_TO_SERVERS:
+        print 'You must set DEPLOY_TO_SERVERS = True in your app_config.py before setting up the servers.'
+
+    run('sudo apt-get -y purge openjdk*')
+    run('sudo apt-get -y install software-properties-common')
+    run('sudo add-apt-repository -y ppa:webupd8team/java')
+    run('sudo apt-get -y update')
+    run('sudo apt-get -y install oracle-java8-installer')
+    run('wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.2.tar.gz -O elasticsearch.tar.gz')
+    run('tar -xf elasticsearch.tar.gz')
+    run('rm elasticsearch.tar.gz')
+    run('sudo mv elasticsearch-* elasticsearch')
+    run('sudo mv elasticsearch /usr/local/share')
+    run('curl -L http://github.com/elasticsearch/elasticsearch-servicewrapper/tarball/master | tar -xz')
+    run('sudo mv *servicewrapper*/service /usr/local/share/elasticsearch/bin/')
+    run('rm -Rf *servicewrapper*')
+    run('sudo /usr/local/share/elasticsearch/bin/service/elasticsearch install')
+    run("sudo ln -s 'readlink -f /usr/local/share/elasticsearch/bin/service/elasticsearch' /usr/local/bin/rcelasticsearch")
+    run('sudo service elasticsearch start')
+    run('sudo pip install elasticsearch')
 
 
 """
