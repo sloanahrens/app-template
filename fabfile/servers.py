@@ -98,7 +98,6 @@ def install_es():
     run('sudo /usr/local/share/elasticsearch/bin/service/elasticsearch install')
     run("sudo ln -s 'readlink -f /usr/local/share/elasticsearch/bin/service/elasticsearch' /usr/local/bin/rcelasticsearch")
     run('sudo service elasticsearch start')
-    run('sudo pip install elasticsearch')
 
 ##########
 
