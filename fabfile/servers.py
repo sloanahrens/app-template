@@ -31,8 +31,8 @@ def fix_nginx():
     if not app_config.DEPLOY_TO_SERVERS:
         print 'You must set DEPLOY_TO_SERVERS = True in your app_config.py before setting up the servers.'
 
-    run('sudo rm -rf /etc/nginx/sites-available/default')
-    run('sudo ln -s /etc/nginx/sites-available/circles.nginx.conf /etc/nginx/sites-enabled/circles.nginx.conf')
+    run('sudo rm -rf /etc/nginx/sites-enabled/default')
+    run('sudo ln -s /etc/nginx/sites-available/%s.nginx.conf /etc/nginx/sites-enabled/%s.nginx.conf' % (app_config.PROJECT_FILENAME, app_config.PROJECT_FILENAME))
     run('sudo service nginx restart')
 
 
