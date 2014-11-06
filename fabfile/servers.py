@@ -53,6 +53,8 @@ def prepare():
 
         return
     run('sudo chown ubuntu /var -R; sudo chown ubuntu /tmp -R')
+    run('sudo apt-get -y update')
+    run('sudo apt-get -y install software-properties-common')
     run('sudo apt-get -y install python-software-properties python g++ make')
     run('sudo apt-get -y install python-dev')
     run('sudo apt-get -y install python-setuptools')
@@ -74,7 +76,7 @@ Install ES
 @task
 def install_es():
     """
-    Install Java 8 and Elasticsearch 1.3.2
+    Install Open-JDK 7 and Elasticsearch 1.3.4
     """
     require('settings', provided_by=['production', 'staging'])
     require('branch', provided_by=['stable', 'master', 'branch'])
@@ -83,11 +85,8 @@ def install_es():
         print 'You must set DEPLOY_TO_SERVERS = True in your app_config.py before setting up the servers.'
 
     run('sudo apt-get -y purge openjdk*')
-    run('sudo apt-get -y install software-properties-common')
-    run('sudo add-apt-repository -y ppa:webupd8team/java')
-    run('sudo apt-get -y update')
-    run('sudo apt-get -y install oracle-java8-installer')
-    run('wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.2.tar.gz -O elasticsearch.tar.gz')
+    run('sudo apt-get -y install openjdk-7-jdk')
+    run('wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.4.tar.gz -O elasticsearch.tar.gz')
     run('tar -xf elasticsearch.tar.gz')
     run('rm elasticsearch.tar.gz')
     run('sudo mv elasticsearch-* elasticsearch')
